@@ -1,11 +1,16 @@
-package com.example.practica2_apis.data.remote
+package com.example.practica2_apis.data.remote.Dto
 
 import com.google.gson.annotations.SerializedName
 
 data class StarwarsResponseDto(
-    val count: Int,
-    val next: String?, // puede ser null: por eso lleva "?"
-    val results: List<StarwarsCharacterDto>
+    @SerializedName("count")
+    val count: Int? = null,
+    @SerializedName("next")
+    val next: String? = null,
+    @SerializedName("previous")
+    val previous: String? = null,
+    @SerializedName("results")
+    val results: List<StarwarsCharacterDto>? = null
 )
 
 data class StarwarsCharacterDto(
@@ -31,27 +36,16 @@ data class StarwarsCharacterDto(
     val films: List<String>? = null,
     @SerializedName("species")
     val species: List<String>? = null,
-    @SerializedName("vehicule")
-    val vehicule: List<String>? = null,
-    @SerializedName("starship")
-    val starship: List<String>? = null,
-    @SerializedName("create")
+    @SerializedName("vehicles")
+    val vehicles: List<String>? = null,
+    @SerializedName("starships")
+    val starships: List<String>? = null,
+    @SerializedName("created")
     val created: String? = null,
     @SerializedName("edited")
     val edited: String? = null,
     @SerializedName("url")
     val url: String? = null
-)
-
-data class StarwarsInfoDto(
-    @SerializedName("count")
-    val count: Int? = null,
-    @SerializedName("nextPage")
-    val nextPage: String? = null,
-    @SerializedName("previousPage")
-    val previousPage: String? = null,
-    @SerializedName("totalPages")
-    val totalPages: Int? = null
 )
 
 //fun StarwarsItemDto.aResumen(): StarwarsResumen {

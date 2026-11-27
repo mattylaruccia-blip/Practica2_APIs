@@ -4,13 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.practica2_apis.ui.disney.DisneyScreen
+import com.example.practica2_apis.ui.starwars.StarwarsScreen
 import com.example.practica2_apis.ui.theme.Practica2_APIsTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +27,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Practica2_APIsTheme {
+                var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+                val screenState = rememberSaveableStateHolder()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Column(Modifier.padding(innerPadding)) {
+                        PrimaryTabRow(selectedTabIndex = selectedTab) {
+                            listOf("Disney", "Star Wars").forEachIndexed { index, title ->
+                                Tab(
+                                    selected = selectedTab == index,
+                                    onClick = { selectedTab = index },
+                                    text = { Text(title) }
+                                )
+                            }
+                        }
+                        screenState.SaveableStateProvider(selectedTab) {
+                            when (selectedTab) {
+                                0 -> DisneyScreen()
+                                else -> StarwarsScreen()
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Practica2_APIsTheme {
-        Greeting("Android")
     }
 }
